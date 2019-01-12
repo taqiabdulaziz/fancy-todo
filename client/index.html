@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="797868802001-b5er38ub084usm145org0u67jhsf4b1u.apps.googleusercontent.com">
+    <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <img src="./assets/icons/icon.png" alt="" style="width: 5vh; margin-right: 2vh">
+        <a class="navbar-brand" href="#" style="margin-right: 16vh">Todo-Fancy</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+
+    <div id="wrapper">
+
+        <div class="row">
+
+            <div class="col">
+
+                <!-- Sidebar -->
+                <div id="sidebar-wrapper">
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-brand">
+                            <a href="#">
+                                Welcome, Taqi
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">My Profile</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="logout()">Logout</a>
+                        </li>
+                        <hr>
+                        <li>
+                            <a href="#">Todo</a>
+                        </li>
+                        <li>
+                            <a href="#">Projects</a>
+                        </li>
+                        <br>
+
+
+                    </ul>
+                </div>
+
+                <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <h4 class="modal-title w-100 font-weight-bold">ADD TODO</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body mx-3">
+                                <div class="md-form mb-5">
+                                    <i class="fas fa-envelope prefix grey-text"></i>
+                                    <input type="text" id="defaultForm-email" class="form-control validate" placeholder="Name">
+                                </div>
+
+                                <div class="md-form mb-4">
+                                    <i class="fas fa-lock prefix grey-text"></i>
+                                    <input type="text" id="defaultForm-pass" class="form-control validate" placeholder="description">
+
+                                </div>
+
+                                <div class="md-form mb-4">
+                                        <i class="fas fa-lock prefix grey-text"></i>
+                                        <input type="text" id="datepicker" class="form-control validate" placeholder="date">
+    
+                                    </div>
+
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                                <button onclick="addTodo()" class="btn btn-default">SUBMIT</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- TODO LIST -->
+                <div class="col" style="height: 100vh; padding: 5vh">
+                    <a href="" class="btn btn-success btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm">ADD
+                        TODO</a>
+                    <div class="row">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>Todo</h5>
+                                    <hr>
+                                    <div id="todolist-uncomplete-container">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col">
+                            <h5>Completed</h5>
+                            <hr>
+                            <div id="todolist-completed-container">
+
+                            </div>
+                        </div>
+                        <div class="col">
+                            <h5>Expired</h5>
+                            <hr>
+                            <div id="todolist-expired-container">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <!-- LOGIN PAGE -->
+        <div id="login-page" style="width: 100%; height: 100vh">
+            <div class="row align-items-center" style="width: 100%; height: 100vh">
+                <div class="col-12 text-center">
+                    <h3>Login</h3>
+                </div>
+                <div class="col-12 align-self-center">
+                    <div class="d-flex justify-content-center">
+                        <form style="width: 50vh">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Email address</label>
+                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                                    placeholder="Enter email">
+                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with
+                                    anyone
+                                    else.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Password</label>
+                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="d-flex justify-content-center">
+                        <h5>Signin with</h5>
+                    </div>
+                    <div class="d-flex justify-content-center" style="margin: 5vh">
+                        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <script>
+            var taskList = []
+            var baseUrl = "http://localhost:3000"
+            checkLogin()
+            console.log(document.location.href);
+            function checkLogin(params) {
+                if (localStorage.JWT_TOKEN == undefined) {
+                    loginPage()
+                }
+            }
+
+            function onSignIn(googleUser) {
+                var profile = googleUser.getBasicProfile();
+                console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+                console.log('Name: ' + profile.getName());
+                console.log('Image URL: ' + profile.getImageUrl());
+                console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+                console.log(profile);
+                var id_token = googleUser.getAuthResponse().id_token;
+
+                $.ajax({
+                    type: "POST",
+                    url: `${baseUrl}/google/`,
+                    data: {
+                        token: id_token
+                    },
+                    success: function (response) {
+                        localStorage.JWT_TOKEN = response.jwt_token
+                        localStorage.userId = response.userId
+                        console.log(response, "res");
+                        homePage()
+
+
+                    }
+                });
+
+
+            }
+
+            function logout() {
+                localStorage.clear()
+                signOut()
+                loginPage()
+
+            }
+
+            function undoComplete(taskId) {
+                console.log(`taskid`);
+                let obj = {}
+                taskList.forEach(element => {
+                    if (element._id == taskId) {
+                        element.status = `uncomplete`
+
+                        console.log(element, `test`);
+                        obj = element
+
+                    }
+                });
+                console.log(obj);
+
+                $.ajax({
+                    type: "PUT",
+                    url: `${baseUrl}/todo/${taskId}`,
+                    headers: {
+                        token: localStorage.JWT_TOKEN
+                    },
+                    data: obj,
+                    success: function (response) {
+                        $(`<div id="${obj._id}-uncomplete" class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
+                                        <div class="card-header">${obj.dueDate}</div>
+                                        <div class="card-body">
+                                            <h4 class="card-title">${obj.name}</h4>
+                                            <p class="card-text">${obj.description}</p>
+                                            <div class="row">
+                                                            <div class="col">
+                                                                <hr>
+                                                                <button type="button" class="btn btn-primary btn-sm" onclick="addToCompleted('${obj._id}')">COMPLETE</button>
+                                                                <button type="button" class="btn btn-danger btn-sm">delete</button>
+                                                                    
+                                                            </div>
+                                                        </div>
+                                        </div>
+                                        
+                                        
+                                    </div>`).prependTo(`#todolist-uncomplete-container`).slideDown(`fast`);
+                        $(`#${taskId}-completed`).remove()
+                    }
+                });
+
+            }
+
+            function addToCompleted(taskId) {
+                console.log(`taskid`);
+                let obj = {}
+                taskList.forEach(element => {
+                    if (element._id == taskId) {
+                        element.status = `completed`
+
+                        console.log(element, `test`);
+                        obj = element
+
+                    }
+                });
+                console.log(obj);
+
+
+                $.ajax({
+                    type: "PUT",
+                    url: `${baseUrl}/todo/${taskId}`,
+                    headers: {
+                        token: localStorage.JWT_TOKEN
+                    },
+                    data: obj,
+                    success: function (response) {
+                        $(`<div id="${obj._id}-completed"class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
+                                        <div class="card-header">${obj.dueDate}</div>
+                                        <div class="card-body">
+                                            <h4 class="card-title">${obj.name}</h4>
+                                            <p class="card-text">${obj.description}</p>
+                                            <div class="row">
+                                                            <div class="col">
+                                                                <hr>
+                                                                    <button onclick="undoComplete('${obj._id}')"type="button" class="btn btn-danger btn-sm">UNDO</button>
+                                                                    
+                                                            </div>
+                                                        </div>
+                                        </div>
+                                        
+                                        
+                                    </div>`).prependTo(`#todolist-completed-container`).slideDown(`fast`);
+                        $(`#${taskId}-uncomplete`).remove()
+
+                    }
+                });
+
+            }
+
+            function signOut() {
+                taskList = []
+                var auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                    console.log('User signed out.');
+                });
+            }
+
+            // --------------------------------------------------------STATE------------------------------
+
+            // MARK: login-page
+            function loginPage() {
+                $("tasklist-expired-container").html("");
+                $("tasklist-uncomplete-container").html("");
+                $("tasklist-completed-container").html("");
+                $("body > :not(#login-page)").hide();
+                $("#login-page").appendTo("body");
+                $("#login-page").show();
+            }
+
+            // MARK: home-page
+            function homePage() {
+                $("body > :not(#login-page)").show();
+                $("#login-page").hide();
+                console.log(localStorage);
+
+                $.ajax({
+                    type: "GET",
+                    url: `${baseUrl}/todo`,
+                    headers: {
+                        token: localStorage.JWT_TOKEN,
+                        userId: localStorage.userId
+                    },
+
+                    success: function (response) {
+
+                        response.forEach(element => {
+                            taskList.push(element)
+                            console.log(element);
+
+                            switch (element.status) {
+                                case "uncomplete":
+                                    $(`<div id="${element._id}-uncomplete"class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
+                                        <div class="card-header">${element.dueDate}</div>
+                                        <div class="card-body">
+                                            <h4 class="card-title">${element.name}</h4>
+                                            <p class="card-text">${element.description}</p>
+                                            <div class="row">
+                                                            <div class="col">
+                                                                <hr>
+                                                                    <button type="button" class="btn btn-primary btn-sm" onclick="addToCompleted('${element._id}')">COMPLETE</button>
+                                                                    <button type="button" class="btn btn-danger btn-sm">delete</button>
+                                                            </div>
+                                                        </div>
+                                        </div>
+                                        
+                                        
+                                    </div>
+                            `).prependTo($('#todolist-uncomplete-container')).slideDown(`fast`);
+                                    break;
+
+                                case "completed":
+                                    $(`<div id="${element._id}-completed" class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
+                                        <div class="card-header">${element.dueDate}</div>
+                                        <div class="card-body">
+                                            <h4 class="card-title">${element.name}</h4>
+                                            <p class="card-text">${element.description}</p>
+                                            <div class="row">
+                                                            <div class="col">
+                                                                <hr>
+                                                                    <button onclick="undoComplete('${element._id}')" type="button" class="btn btn-danger btn-sm">Undo</button>
+                                                            </div>
+                                                        </div>
+                                        </div>
+                                        
+                                        
+                                    </div>
+                            `).prependTo($('#todolist-completed-container')).slideDown(`fast`);
+                                    break;
+
+                                default:
+                                    $(`<div id="${element._id}-completed" class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
+                                        <div class="card-header">${element.dueDate}</div>
+                                        <div class="card-body">
+                                            <h4 class="card-title">${element.name}</h4>
+                                            <p class="card-text">${element.description}</p>
+                                            <div class="row">
+                                                            <div class="col">
+                                                                <hr>
+                                                                    
+                                                            </div>
+                                                        </div>
+                                        </div>
+                                        
+                                        
+                                    </div>
+                            `).prependTo($('#todolist-expired-container')).slideDown(`fast`);
+                                    break;
+                            }
+
+
+                        });
+                    }
+                });
+
+            }
+            $(function () {
+                $("#datepicker").datepicker();
+            });
+        </script>
+        <style>
+            /*!
+ * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+            /* Toggle Styles */
+
+            #wrapper {
+                padding-left: 0;
+                -webkit-transition: all 0.5s ease;
+                -moz-transition: all 0.5s ease;
+                -o-transition: all 0.5s ease;
+                transition: all 0.5s ease;
+            }
+
+            #wrapper.toggled {
+                padding-left: 250px;
+            }
+
+            #sidebar-wrapper {
+                z-index: 1000;
+                position: fixed;
+                left: 250px;
+                width: 0;
+                height: 100%;
+                margin-left: -250px;
+                overflow-y: auto;
+                background: #f8f9fa;
+                -webkit-transition: all 0.5s ease;
+                -moz-transition: all 0.5s ease;
+                -o-transition: all 0.5s ease;
+                transition: all 0.5s ease;
+            }
+
+            #wrapper.toggled #sidebar-wrapper {
+                width: 250px;
+            }
+
+            #page-content-wrapper {
+                width: 100%;
+                position: absolute;
+                padding: 15px;
+            }
+
+            #wrapper.toggled #page-content-wrapper {
+                position: absolute;
+                margin-right: -250px;
+            }
+
+            /* Sidebar Styles */
+
+            .sidebar-nav {
+                position: absolute;
+                top: 0;
+                width: 250px;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+            .sidebar-nav li {
+                text-indent: 20px;
+                line-height: 40px;
+            }
+
+            .sidebar-nav li a {
+                display: block;
+                text-decoration: none;
+                color: #000;
+            }
+
+            .sidebar-nav li a:hover {
+                text-decoration: none;
+                color: #DD2d;
+                background: rgba(255, 255, 255, 0.2);
+            }
+
+            .sidebar-nav li a:active,
+            .sidebar-nav li a:focus {
+                text-decoration: none;
+            }
+
+            .sidebar-nav>.sidebar-brand {
+                height: 65px;
+                font-size: 18px;
+                line-height: 60px;
+            }
+
+            .sidebar-nav>.sidebar-brand a {
+                color: #999999;
+            }
+
+            .sidebar-nav>.sidebar-brand a:hover {
+                color: #AAAA;
+                background: #DD2d;
+            }
+
+            @media(min-width:768px) {
+                #wrapper {
+                    padding-left: 250px;
+                }
+
+                #wrapper.toggled {
+                    padding-left: 0;
+                }
+
+                #sidebar-wrapper {
+                    width: 250px;
+                }
+
+                #wrapper.toggled #sidebar-wrapper {
+                    width: 0;
+                }
+
+                #page-content-wrapper {
+                    padding: 20px;
+                    position: relative;
+                }
+
+                #wrapper.toggled #page-content-wrapper {
+                    position: relative;
+                    margin-right: 0;
+                }
+            }
+        </style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+</body>
+
+</html>
