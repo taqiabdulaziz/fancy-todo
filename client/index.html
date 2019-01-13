@@ -8,12 +8,21 @@
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <meta name="google-signin-client_id" content="797868802001-b5er38ub084usm145org0u67jhsf4b1u.apps.googleusercontent.com">
     <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
-    <title>Document</title>
+    <link rel="shortcut icon" href="./assets/icons/icon.png" type="image/x-icon">
+    <link rel="manifest" href="/manifest.json" />
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+    <script>
+
+    </script>
+    <title>Todo-Fancy</title>
 </head>
 
 <body>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js">
+    </script>
+    <script>
+        var appState = undefined
+    </script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
@@ -26,58 +35,110 @@
 
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
+                
+               
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search">
-                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-            </form>
+            
         </div>
     </nav>
 
 
     <div id="wrapper">
-
         <div class="row">
-
-            <div class="col">
-
+            <div class="col" id="home-page">
                 <!-- Sidebar -->
                 <div id="sidebar-wrapper">
                     <ul class="sidebar-nav">
                         <li class="sidebar-brand">
-                            <a href="#">
+                            <a href="#" id="welcome-profile">
                                 Welcome, Taqi
                             </a>
+                            
                         </li>
+                        <div class="container">
+                        <h6>UserID: </h6>
+                            <h6 id="userId"></h6>
+                        </div>
+                        <hr>
                         <li>
-                            <a href="#">My Profile</a>
+                            <a href="#" >My Profile</a>
+                            
                         </li>
                         <li>
                             <a href="#" onclick="logout()">Logout</a>
                         </li>
                         <hr>
                         <li>
-                            <a href="#">Todo</a>
+                            <a href="#" onclick="homePage()">Todo</a>
                         </li>
                         <li>
-                            <a href="#">Projects</a>
+                            <a href="#" onclick="projectPage()">Projects</a>
                         </li>
                         <br>
 
 
                     </ul>
+                </div>
+
+                <div class="col" style="height: 100vh; padding: 5vh" id="project-page">
+                    <ol class="breadcrumb" id="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Projects</a></li>
+                    </ol>
+                    <a href="#" onclick="addProject()">add project</a>
+                    <!-- PROJECT LIST -->
+                    <div id="projects">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Projects</h5>
+                                        <hr>
+                                        <div id="project-container">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Project todo list -->
+                    <div class="col" style="height: 100vh; display: none" id="project-todolist-page">
+
+                        <a href="" class="btn btn-success btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm">ADD
+                            TODO</a>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Todo</h5>
+                                        <hr>
+                                        <div id="project-todolist-uncomplete-container">
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h5>Completed</h5>
+                                <hr>
+                                <div id="project-todolist-completed-container">
+
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h5>Expired</h5>
+                                <hr>
+                                <div id="project-todolist-expired-container">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -93,7 +154,8 @@
                             <div class="modal-body mx-3">
                                 <div class="md-form mb-5">
                                     <i class="fas fa-envelope prefix grey-text"></i>
-                                    <input type="text" id="defaultForm-email" class="form-control validate" placeholder="Name">
+                                    <input type="text" id="defaultForm-name" class="form-control validate" placeholder="Name"
+                                        required>
                                 </div>
 
                                 <div class="md-form mb-4">
@@ -103,22 +165,22 @@
                                 </div>
 
                                 <div class="md-form mb-4">
-                                        <i class="fas fa-lock prefix grey-text"></i>
-                                        <input type="text" id="datepicker" class="form-control validate" placeholder="date">
-    
-                                    </div>
+                                    <i class="fas fa-lock prefix grey-text"></i>
+                                    <input type="text" id="datepicker" class="form-control validate" placeholder="date">
+
+                                </div>
 
                             </div>
                             <div class="modal-footer d-flex justify-content-center">
-                                <button onclick="addTodo()" class="btn btn-default">SUBMIT</button>
+                                <button id="submitTodoBtn" data-toggle="modal" data-target="#modalLoginForm" class="btn btn-default"
+                                    onclick="addTodo(appState)">SUBMIT</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-
                 <!-- TODO LIST -->
-                <div class="col" style="height: 100vh; padding: 5vh">
+                <div class="col" style="height: 100vh; padding: 5vh" id="todolist-page">
                     <a href="" class="btn btn-success btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm">ADD
                         TODO</a>
                     <div class="row">
@@ -151,11 +213,13 @@
                         </div>
                     </div>
                 </div>
+
+
             </div>
 
+
+
         </div>
-
-
 
         <!-- LOGIN PAGE -->
         <div id="login-page" style="width: 100%; height: 100vh">
@@ -178,14 +242,20 @@
                                 <label for="exampleInputPassword1">Password</label>
                                 <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary" onclick="signinForm()">Submit</button>
                         </form>
                     </div>
                 </div>
 
                 <div class="col-12">
                     <div class="d-flex justify-content-center">
-                        <h5>Signin with</h5>
+                        <button type="submit" class="btn btn-secondary" onclick="registerPage()"> register</button>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <hr>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <h5>Or signin with</h5>
                     </div>
                     <div class="d-flex justify-content-center" style="margin: 5vh">
                         <div class="g-signin2" data-onsuccess="onSignIn"></div>
@@ -195,75 +265,431 @@
             </div>
         </div>
 
+        <div id="addProject-page" style="width: 100%; height: 100vh">
+            <div class="row align-items-center" style="width: 100%; height: 100vh">
+                <div class="col-12 text-center">
+                    <h3>add project</h3>
+                </div>
+                <div class="col-12 align-self-center">
+                    <div class="d-flex justify-content-center">
+                        <form style="width: 50vh">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">project name</label>
+                                <input type="text" class="form-control" id="project-name-form" aria-describedby="emailHelp"
+                                    placeholder="Enter name">
+                            </div>
+                            <button type="submit" class="btn btn-primary" onclick="addOneProject()">Submit</button>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div id="addMember-page" style="width: 100%; height: 100vh">
+            <div class="row align-items-center" style="width: 100%; height: 100vh">
+                <div class="col-12 text-center">
+                    <h3>add member to project</h3>
+                </div>
+                <div class="col-12 align-self-center">
+                    <div class="d-flex justify-content-center">
+                        <form style="width: 50vh">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">member ID</label>
+                                <input type="text" class="form-control" id="member-id-form" aria-describedby="emailHelp"
+                                    placeholder="Enter name">
+
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" onclick="addOneMember()">Submit</button>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div id="register-page" style="width: 100%; height: 100vh">
+            <div class="row align-items-center" style="width: 100%; height: 100vh">
+                <div class="col-12 text-center">
+                    <h3>REGISTER</h3>
+                </div>
+                <div class="col-12 align-self-center">
+                    <div class="d-flex justify-content-center">
+                        <form style="width: 50vh">
+                            <div class="form-group">
+                                <label for="register-email">Email address</label>
+                                <input type="email" class="form-control" id="register-email" aria-describedby="emailHelp"
+                                    placeholder="Enter email">
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="register-username">Username</label>
+                                <input type="text" class="form-control" id="register-username" aria-describedby="emailHelp"
+                                    placeholder="Enter username">
+
+                            </div>
+                            <div class="form-group">
+                                <label for="register-password">Password</label>
+                                <input type="password" class="form-control" id="register-password" placeholder="Password">
+                            </div>
+                            <button type="submit" class="btn btn-primary" onclick="register()">Submit</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
         <script>
+            var currentProject;
+            var OneSignal = window.OneSignal || [];
+            OneSignal.push(function () {
+                OneSignal.init({
+                    appId: "d6d2f9b6-445f-4d04-8d4b-6a72d97cdf9e",
+                    autoRegister: false,
+                    notifyButton: {
+                        enable: true,
+                    },
+                    allowLocalhostAsSecureOrigin: true,
+                });
+                console.log(OneSignal.getUserId(function (id) { console.log(id) }));
+                console.log(`haha`);
+            });
+
             var taskList = []
+            var projectList;
             var baseUrl = "http://localhost:3000"
             checkLogin()
-            console.log(document.location.href);
+
             function checkLogin(params) {
                 if (localStorage.JWT_TOKEN == undefined) {
                     loginPage()
                 }
             }
 
+            function addProject() {
+                $("#project-page").hide();
+                $("#addProject-page").show();
+                $("#addMember-page").hide();
+                
+            }
+
+            function addOneMember() {
+
+                $.ajax({
+                            type: "PUT",
+                            url: `${baseUrl}/project/${currentProject}`,
+                            headers: {
+                                token: localStorage.JWT_TOKEN,
+                                change: "addMember"
+                            },
+                            data: {
+                                userId: $("#member-id-form").val()
+                            },
+                            success: function (response) {
+                                $("#addProject-page").hide();
+                                $("#addMember-page").hide();
+                                projectPage()
+
+                            }
+                        });
+            }
+
+            function addOneProject() {
+                $("#addProject-page").hide();
+                $("#project-page").show();
+                $.ajax({
+                    type: "POST",
+                    url: `${baseUrl}/project`,
+                    headers: {
+                        token: localStorage.JWT_TOKEN
+                    },
+                    data: {
+                        users: localStorage.userId,
+                        name: $("#project-name-form").val()
+                    },
+                    success: function (response) {
+                        projectList.push(response)
+                        
+                    }
+                });
+            }
+
+            function addMember(projectId) {
+                currentProject = projectId
+
+                $("#project-page").hide();
+                $("#addProject-page").hide();
+                $("#addMember-page").show();
+            }
+
+            function register() {
+                $.ajax({
+                    type: "POST",
+                    url: `${baseUrl}/user`,
+                    data: {
+                        username: $("#register-username").val(),
+                        email: $("#register-email").val(),
+                        password: $("#register-password").val()
+                    },
+                    success: function (response) {
+                        console.log(response);
+
+                    },
+                    error: function (e) {
+                        console.log(e);
+
+                    }
+                });
+            }
+
+            function signinForm() {
+                console.log($("#exampleInputEmail1").val());
+                console.log($("#exampleInputPassword1").val());
+
+                $.ajax({
+                    type: "POST",
+                    url: `${baseUrl}/login`,
+                    headers: {
+                        token: localStorage.JWT_TOKEN
+                    },
+                    data: {
+                        email: $("#exampleInputEmail1").val(),
+                        password: $("#exampleInputPassword1").val()
+                    },
+                    success: function (response) {
+                        console.log(response);
+
+                        localStorage.JWT_TOKEN = response.jwt_token
+                        localStorage.userId = response.result._id
+                        $("#welcome-profile").html(response.result.name);
+                        homePage()
+
+                    },
+                    error: function (e) {
+                        console.log(e);
+
+                    }
+                });
+            }
+
             function onSignIn(googleUser) {
+
                 var profile = googleUser.getBasicProfile();
                 console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
                 console.log('Name: ' + profile.getName());
                 console.log('Image URL: ' + profile.getImageUrl());
-                console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+                console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not fsent.
                 console.log(profile);
+
                 var id_token = googleUser.getAuthResponse().id_token;
 
                 $.ajax({
                     type: "POST",
-                    url: `${baseUrl}/google/`,
+                    url: `${baseUrl}/google`,
                     data: {
                         token: id_token
                     },
                     success: function (response) {
                         localStorage.JWT_TOKEN = response.jwt_token
                         localStorage.userId = response.userId
-                        console.log(response, "res");
+                        $("#welcome-profile").html(response.payload.given_name);
                         homePage()
+                    },
+                    error: function (e) {
 
 
                     }
                 });
+            }
+
+            function deleteTodo(taskId, state) {
+                if (!state) {
+                    taskList.forEach((element) => {
+                        if (element._id == taskId) {
+                            $.ajax({
+                                type: "DELETE",
+                                url: `${baseUrl}/todo/${taskId}`,
+                                headers: {
+                                    token: localStorage.JWT_TOKEN
+                                },
+                                success: function (response) {
+                                    console.log(response);
+                                    $(`#${taskId}-uncomplete`).remove()
+                                }
+                            });
+                        }
+                    })
+                } else if (state == "project") {
+                    currentProject.todos.forEach((element) => {
+                        if (element._id == taskId) {
+                            $.ajax({
+                                type: "DELETE",
+                                url: `${baseUrl}/todo/${taskId}`,
+                                headers: {
+                                    token: localStorage.JWT_TOKEN
+                                },
+                                success: function (response) {
+                                    console.log(response);
+                                    $(`#project-${taskId}-uncomplete`).remove()
+                                }
+                            });
+                        }
+                    })
+                }
+            }
+
+            function addTodo(state) {
+                $(".modal").each(function (index, element) {
+                    console.log("modal");
+                    console.log(element);
+                });
+                console.log(state, `stet`);
+                console.log(`mashok`);
+
+                if (state == undefined) {
+                    console.log(`undefined nich`);
+
+                    $.ajax({
+                        type: "POST",
+                        url: `${baseUrl}/todo/${localStorage.userId}`,
+                        headers: {
+                            token: localStorage.JWT_TOKEN
+                        },
+                        data: {
+                            name: $("#defaultForm-name").val(),
+                            description: $("#defaultForm-pass").val(),
+                            dueDate: $("#datepicker").val(),
+                            status: "uncomplete"
+                        },
+                        success: function (response) {
+                            console.log(response._id, "todo added!");
+
+                            taskList.push(response)
+                            $(`<div id="${response._id}-uncomplete"class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
+                                        <div class="card-header">${$("#datepicker").val()}</div>
+                                        <div class="card-body">
+                                            <h4 class="card-title">${$("#defaultForm-name").val()}</h4>
+                                            <p class="card-text">${String($("#defaultForm-pass").val())}</p>
+                                            <div class="row">
+                                                            <div class="col">
+                                                                <hr>
+                                                                <button type="button" class="btn btn-primary btn-sm" onclick="addToCompleted('${response._id}')">COMPLETE</button>
+                                                                <button type="button" class="btn btn-danger btn-sm" onclick="deleteTodo('${response._id}')">delete</button>
+                                                            </div>
+                                                        </div>
+                                        </div>
+                                        
+                                        
+                                    </div>`).prependTo(`#todolist-uncomplete-container`).slideDown(`fast`);
+                            $("#defaultForm-name").val("");
+                            $("#defaultForm-pass").val("");
+                            $("#datepicker").val("");
+                        },
+                        error: function (e) {
+                            console.log(e);
+
+                        }
+                    });
+                } else if (state == `project`) {
+                    console.log(state);
+                    console.log(`PROJECT NIY`);
+
+                    $.ajax({
+                        type: "POST",
+                        url: `${baseUrl}/todo/${null}`,
+                        headers: {
+                            token: localStorage.JWT_TOKEN
+                        },
+                        data: {
+                            name: $("#defaultForm-name").val(),
+                            description: $("#defaultForm-pass").val(),
+                            dueDate: $("#datepicker").val(),
+                            status: "uncomplete"
+                        },
+                        success: function (response) {
+                            console.log(response._id, "todo added!");
+                            console.log(currentProject);
+
+                            $.ajax({
+                                type: "PUT",
+                                url: `${baseUrl}/project/${currentProject._id}`,
+                                headers: {
+                                    token: localStorage.JWT_TOKEN,
+                                    change: "addTodo"
+                                },
+                                data: {
+                                    todo: response._id
+                                },
+                                success: function (projectData) {
+                                    console.log(projectData, `sedapa`);
+                                    $(`<div id="project-${response._id}-uncomplete"class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
+                                        <div class="card-header">${$("#datepicker").val()}</div>
+                                        <div class="card-body">
+                                            <h4 class="card-title">${$("#defaultForm-name").val()}</h4>
+                                            <p class="card-text">${String($("#defaultForm-pass").val())}</p>
+                                            <div class="row">
+                                                            <div class="col">
+                                                                <hr>
+                                                                <button type="button" class="btn btn-primary btn-sm" onclick="addToCompleted('${response._id}', 'project')">COMPLETE</button>
+                                                                <button type="button" class="btn btn-danger btn-sm" onclick="deleteTodo('${response._id}', 'project')">delete</button>
+                                                            </div>
+                                                        </div>
+                                        </div>
+                                        
+                                        
+                                    </div>`).prependTo(`#project-todolist-uncomplete-container`).slideDown(`fast`);
+                                    $("#defaultForm-name").val("");
+                                    $("#defaultForm-pass").val("");
+                                    $("#datepicker").val("");
+                                },
+                                error: function (error) {
+                                    console.log(error);
 
 
+                                }
+                            });
+                        },
+                        error: function (e) {
+                            console.log(e);
+
+                        }
+                    });
+                }
             }
 
             function logout() {
                 localStorage.clear()
                 signOut()
                 loginPage()
-
             }
 
-            function undoComplete(taskId) {
-                console.log(`taskid`);
-                let obj = {}
-                taskList.forEach(element => {
-                    if (element._id == taskId) {
-                        element.status = `uncomplete`
+            function undoComplete(taskId, state) {
+                if (!state) {
+                    let obj = {}
+                    taskList.forEach(element => {
+                        if (element._id == taskId) {
+                            element.status = `uncomplete`
 
-                        console.log(element, `test`);
-                        obj = element
+                            console.log(element, `test`);
+                            obj = element
 
-                    }
-                });
-                console.log(obj);
+                        }
+                    });
 
-                $.ajax({
-                    type: "PUT",
-                    url: `${baseUrl}/todo/${taskId}`,
-                    headers: {
-                        token: localStorage.JWT_TOKEN
-                    },
-                    data: obj,
-                    success: function (response) {
-                        $(`<div id="${obj._id}-uncomplete" class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
+                    $.ajax({
+                        type: "PUT",
+                        url: `${baseUrl}/todo/${taskId}`,
+                        headers: {
+                            token: localStorage.JWT_TOKEN
+                        },
+                        data: obj,
+                        success: function (response) {
+                            $(`<div id="${obj._id}-uncomplete" class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
                                         <div class="card-header">${obj.dueDate}</div>
                                         <div class="card-body">
                                             <h4 class="card-title">${obj.name}</h4>
@@ -272,7 +698,7 @@
                                                             <div class="col">
                                                                 <hr>
                                                                 <button type="button" class="btn btn-primary btn-sm" onclick="addToCompleted('${obj._id}')">COMPLETE</button>
-                                                                <button type="button" class="btn btn-danger btn-sm">delete</button>
+                                                                <button type="button" class="btn btn-danger btn-sm" onclick="deleteTodo('${obj._id}')">delete</button>
                                                                     
                                                             </div>
                                                         </div>
@@ -280,36 +706,80 @@
                                         
                                         
                                     </div>`).prependTo(`#todolist-uncomplete-container`).slideDown(`fast`);
-                        $(`#${taskId}-completed`).remove()
+                            $(`#${taskId}-completed`).remove()
+                        }
+                    });
+                } else if (state == "project") {
+                    let obj = {}
+                    currentProject.todos.forEach(element => {
+                        if (element._id == taskId) {
+                            element.status = `uncomplete`
+                            console.log(element, `test`);
+                            obj = element
+                        }
+                    });
+
+                    if (obj.userId == null) {
+                        delete obj.userId
                     }
-                });
+
+                    $.ajax({
+                        type: "PUT",
+                        url: `${baseUrl}/todo/${taskId}`,
+                        headers: {
+                            token: localStorage.JWT_TOKEN
+                        },
+                        data: obj,
+                        success: function (response) {
+                            console.log(response, `responseeee`);
+
+                            $(`<div id="${state}-${obj._id}-uncomplete" class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
+                                        <div class="card-header">${obj.dueDate}</div>
+                                        <div class="card-body">
+                                            <h4 class="card-title">${obj.name}</h4>
+                                            <p class="card-text">${obj.description}</p>
+                                            <div class="row">
+                                                            <div class="col">
+                                                                <hr>
+                                                                <button type="button" class="btn btn-primary btn-sm" onclick="addToCompleted('${obj._id}', 'project')">COMPLETE</button>
+                                                                <button type="button" class="btn btn-danger btn-sm" onclick="deleteTodo('${obj._id}', 'project')">delete</button>
+                                                                    
+                                                            </div>
+                                                        </div>
+                                        </div>
+                                        
+                                        
+                                    </div>`).prependTo(`#project-todolist-uncomplete-container`).slideDown(`fast`);
+                            $(`#${state}-${taskId}-completed`).remove()
+                        }
+                    });
+                }
 
             }
 
-            function addToCompleted(taskId) {
-                console.log(`taskid`);
-                let obj = {}
-                taskList.forEach(element => {
-                    if (element._id == taskId) {
-                        element.status = `completed`
+            function addToCompleted(taskId, state) {
+                console.log(state);
 
-                        console.log(element, `test`);
-                        obj = element
+                if (state == undefined) {
+                    let obj = {}
+                    taskList.forEach(element => {
+                        if (element._id == taskId) {
+                            element.status = `completed`
+                            console.log(`found`);
+                            $(`#${taskId}-uncomplete`).remove()
+                            obj = element
 
-                    }
-                });
-                console.log(obj);
-
-
-                $.ajax({
-                    type: "PUT",
-                    url: `${baseUrl}/todo/${taskId}`,
-                    headers: {
-                        token: localStorage.JWT_TOKEN
-                    },
-                    data: obj,
-                    success: function (response) {
-                        $(`<div id="${obj._id}-completed"class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
+                        }
+                    });
+                    $.ajax({
+                        type: "PUT",
+                        url: `${baseUrl}/todo/${taskId}`,
+                        headers: {
+                            token: localStorage.JWT_TOKEN
+                        },
+                        data: obj,
+                        success: function (response) {
+                            $(`<div id="${obj._id}-completed"class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
                                         <div class="card-header">${obj.dueDate}</div>
                                         <div class="card-body">
                                             <h4 class="card-title">${obj.name}</h4>
@@ -325,11 +795,59 @@
                                         
                                         
                                     </div>`).prependTo(`#todolist-completed-container`).slideDown(`fast`);
-                        $(`#${taskId}-uncomplete`).remove()
 
+
+                        }
+                    });
+                } else if (state == "project") {
+                    let obj = {}
+                    currentProject.todos.forEach(element => {
+                        if (element._id == taskId) {
+                            element.status = `completed`
+                            console.log(`found`);
+                            $(`#${state}-${taskId}-uncomplete`).remove()
+                            obj = element
+
+                        }
+                    });
+                    if (obj.userId == null) {
+                        delete obj.userId
                     }
-                });
 
+                    $.ajax({
+                        type: "PUT",
+                        url: `${baseUrl}/todo/${taskId}`,
+                        headers: {
+                            token: localStorage.JWT_TOKEN
+                        },
+                        data: obj,
+                        success: function (response) {
+                            console.log(`kamekameha`);
+
+                            $(`<div id="${state}-${obj._id}-completed"class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
+                                        <div class="card-header">${obj.dueDate}</div>
+                                        <div class="card-body">
+                                            <h4 class="card-title">${obj.name}</h4>
+                                            <p class="card-text">${obj.description}</p>
+                                            <div class="row">
+                                                            <div class="col">
+                                                                <hr>
+                                                                    <button onclick="undoComplete('${obj._id}', 'project')"type="button" class="btn btn-danger btn-sm">UNDO</button>
+                                                                    
+                                                            </div>
+                                                        </div>
+                                        </div>
+                                    </div>`).prependTo(`#project-todolist-completed-container`).slideDown(`fast`);
+                        },
+                        error: function (err) {
+                            console.log(err);
+                            console.log("err");
+
+
+                        }
+                    });
+
+                }
             }
 
             function signOut() {
@@ -342,11 +860,143 @@
 
             // --------------------------------------------------------STATE------------------------------
 
+            // MARK: project-page
+            function projectPage() {
+                appState = "project"
+                console.log(`productPage`);
+
+                $("#todolist-page").hide();
+                $(``).appendTo("#home-page");
+                $("#project-page").show();
+                $("#projects").show();
+                $("#project-todolist-page").hide();
+                $("#project-container").empty().show();
+                $.ajax({
+                    type: "GET",
+                    url: `${baseUrl}/project?users=${localStorage.userId}`,
+                    headers: {
+                        token: localStorage.JWT_TOKEN
+                    },
+                    success: function (response) {
+                        console.log(`qntl`);
+
+                        projectList = response
+                        response.forEach((element) => {
+                            
+                            $(`<div class="card" style="width: 30%; margin-bottom: 2vh">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${element.name}</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">${element.users.length} Members</h6>
+                                        <hr>
+                                        <a href="#" class="card-link">Detail</a>
+                                        <a href="#" class="card-link" onclick="addMember('${element._id}')">Add Member</a>
+                                        <a href="#" class="card-link" onclick="projectTodos('${element._id}')">Todos</a>
+                                    </div>
+                                    </div>`).appendTo("#project-container");
+
+                        })
+
+                    }
+                });
+            }
+
+            function projectTodos(projectId) {
+                projectList.forEach((element) => {
+                    console.log(projectId);
+                    if (element._id == projectId) {
+                        currentProject = element
+                    }
+                })
+                $("#project-todolist-page").show();
+                $("#project-todolist-uncomplete-container").empty()
+                $("#project-todolist-completed-container").empty();
+                $("#project-todolist-expired-container").empty();
+                $("#projects").hide();
+                $("#breadcrumb").hide().remove();
+
+                $(`<ol class="breadcrumb" id="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#" onclick="projectPage()">Projects</a></li>
+                    <li class="breadcrumb-item"><a href="#">${currentProject.name}</a></li>
+                    </ol>`).prependTo("#project-page");
+
+                currentProject.todos.forEach((element) => {
+                    switch (element.status) {
+                        case "uncomplete":
+                            if (new Date(element.dueDate) < new Date()) {
+
+                                $(`<div id="project-${element._id}-completed" class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
+                                            <div class="card-header">${element.dueDate}</div>
+                                            <div class="card-body">
+                                                <h4 class="card-title">${element.name}123</h4>
+                                                <p class="card-text">${element.description}</p>
+                                                <div class="row">
+                                                                <div class="col">
+                                                                    <hr>
+                                                                        
+                                                                </div>
+                                                            </div>
+                                            </div>    
+                                            </div>
+
+                                            `).prependTo($('#project-todolist-expired-container')).slideDown(`fast`);
+                            } else {
+                                $(`<div id="project-${element._id}-uncomplete" class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
+                                        <div class="card-header">${element.dueDate}</div>
+                                        <div class="card-body">
+                                            <h4 class="card-title">${element.name}</h4>
+                                            <p class="card-text">${element.description}</p>
+                                            <div class="row">
+                                                            <div class="col">
+                                                                <hr>
+                                                                    <button type="button" class="btn btn-primary btn-sm" onclick="addToCompleted('${element._id}', 'project')">COMPLETE</button>
+                                                                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteTodo('${element._id}', 'project')">delete</button>
+                                                            </div>
+                                                        </div>
+                                        </div>
+                                    </div>
+                            `).prependTo($('#project-todolist-uncomplete-container')).slideDown(`fast`);
+                            }
+                            break;
+
+
+                        case "completed":
+                            $(`<div id="project-${element._id}-completed" class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
+                                        <div class="card-header">${element.dueDate}</div>
+                                        <div class="card-body">
+                                            <h4 class="card-title">${element.name}</h4>
+                                            <p class="card-text">${element.description}</p>
+                                            <div class="row">
+                                                            <div class="col">
+                                                                <hr>
+                                                                    <button onclick="undoComplete('${element._id}', 'project')" type="button" class="btn btn-danger btn-sm">Undo</button>
+                                                            </div>
+                                                        </div>
+                                        </div>
+                                        
+                                        
+                                    </div>
+                            `).prependTo($('#project-todolist-completed-container')).slideDown(`fast`);
+                            break;
+
+                        default:
+
+                            break;
+                    }
+                })
+
+            }
+
+            // MARK: register-page
+            function registerPage() {
+
+                $("body > :not(#register-page)").hide();
+                $("#register-page").appendTo("body");
+                $("#register-page").show();
+            }
             // MARK: login-page
             function loginPage() {
-                $("tasklist-expired-container").html("");
-                $("tasklist-uncomplete-container").html("");
-                $("tasklist-completed-container").html("");
+
                 $("body > :not(#login-page)").hide();
                 $("#login-page").appendTo("body");
                 $("#login-page").show();
@@ -354,10 +1004,18 @@
 
             // MARK: home-page
             function homePage() {
+                appState = undefined
+                $("#todolist-expired-container").html("")
+                $("#todolist-uncomplete-container").html("");
+                $("#todolist-completed-container").html("");
                 $("body > :not(#login-page)").show();
+                $("#todolist-page").show();
                 $("#login-page").hide();
-                console.log(localStorage);
-
+                $("#project-page").hide();
+                $("#register-page").hide();
+                $("#addProject-page").hide();
+                $("#addMember-page").hide();
+                $("#userId").html(`${localStorage.userId}`);
                 $.ajax({
                     type: "GET",
                     url: `${baseUrl}/todo`,
@@ -365,16 +1023,34 @@
                         token: localStorage.JWT_TOKEN,
                         userId: localStorage.userId
                     },
-
                     success: function (response) {
 
                         response.forEach(element => {
                             taskList.push(element)
-                            console.log(element);
 
                             switch (element.status) {
                                 case "uncomplete":
-                                    $(`<div id="${element._id}-uncomplete"class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
+                                    if (new Date(element.dueDate) < new Date()) {
+
+                                        $(`<div id="${element._id}-completed" class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
+                                            <div class="card-header">${element.dueDate}</div>
+                                            <div class="card-body">
+                                                <h4 class="card-title">${element.name}</h4>
+                                                <p class="card-text">${element.description}</p>
+                                                <div class="row">
+                                                                <div class="col">
+                                                                    <hr>
+                                                                        
+                                                                </div>
+                                                            </div>
+                                            </div>    
+                                            </div>
+
+                                            `).prependTo($('#todolist-expired-container')).slideDown(`fast`);
+                                    } else {
+
+
+                                        $(`<div id="${element._id}-uncomplete" class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
                                         <div class="card-header">${element.dueDate}</div>
                                         <div class="card-body">
                                             <h4 class="card-title">${element.name}</h4>
@@ -383,7 +1059,7 @@
                                                             <div class="col">
                                                                 <hr>
                                                                     <button type="button" class="btn btn-primary btn-sm" onclick="addToCompleted('${element._id}')">COMPLETE</button>
-                                                                    <button type="button" class="btn btn-danger btn-sm">delete</button>
+                                                                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteTodo('${element._id}')">delete</button>
                                                             </div>
                                                         </div>
                                         </div>
@@ -391,7 +1067,9 @@
                                         
                                     </div>
                             `).prependTo($('#todolist-uncomplete-container')).slideDown(`fast`);
+                                    }
                                     break;
+
 
                                 case "completed":
                                     $(`<div id="${element._id}-completed" class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
@@ -406,29 +1084,12 @@
                                                             </div>
                                                         </div>
                                         </div>
-                                        
-                                        
                                     </div>
                             `).prependTo($('#todolist-completed-container')).slideDown(`fast`);
                                     break;
 
                                 default:
-                                    $(`<div id="${element._id}-completed" class="card border-primary mb-3" style="max-width: 20rem; display: none; cursor: pointer">
-                                        <div class="card-header">${element.dueDate}</div>
-                                        <div class="card-body">
-                                            <h4 class="card-title">${element.name}</h4>
-                                            <p class="card-text">${element.description}</p>
-                                            <div class="row">
-                                                            <div class="col">
-                                                                <hr>
-                                                                    
-                                                            </div>
-                                                        </div>
-                                        </div>
-                                        
-                                        
-                                    </div>
-                            `).prependTo($('#todolist-expired-container')).slideDown(`fast`);
+
                                     break;
                             }
 
@@ -441,6 +1102,7 @@
             $(function () {
                 $("#datepicker").datepicker();
             });
+
         </script>
         <style>
             /*!

@@ -8,7 +8,8 @@ var todoSchema = new Schema({
     dueDate: Date,
     userId: {
         type: Schema.Types.ObjectId,
-        ref: `User`
+        ref: `User`,
+        default: null
     },
     createdAt: {
         type: Date,
@@ -17,4 +18,5 @@ var todoSchema = new Schema({
 })
 
 var Todo = mongoose.model(`Todo`, todoSchema)
+
 module.exports = Todo

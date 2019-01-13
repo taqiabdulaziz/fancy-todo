@@ -1,4 +1,5 @@
 const Project = require(`../models/Project`)
+const ObjectId = require(`mongoose`).Types.ObjectId
 
 module.exports = {
     create: function (req, res) {
@@ -23,8 +24,14 @@ module.exports = {
             });
     },
     findAll: function (req, res) {
+        console.log(req.query.users, `users`);
+
         req.query ?
-            Project.find(req.query)
+            Project.find({
+                "users": {
+                    _id: req.query.users
+                }
+            }).populate(`todos`).populate(`users`)
                 .then((result) => {
                     result ?
                         res.status(200).json(result) :
@@ -42,16 +49,46 @@ module.exports = {
                 })
     },
     update: function (req, res) {
-        //TODO:
-        Project.findOneAndUpdate({ _id: req.params.projectId }, req.body)
-            .populate(`users`)
-            .then((result) => {
-                result ?
-                    res.status(200).json(result) :
-                    res.status(400).json({ msg: `Cant find project with id ${req.params.projectId}` })
-            }).catch((err) => {
-                res.status(500).json({ msg: `internal server error`, err: err })
-            });
+        console.log(req.headers, `body`);
+
+        if (req.headers.change == "addTodo") {
+            //TODO:
+            Project.findOneAndUpdate({ _id: req.params.projectId }, {
+                $push: {
+                    todos: req.body.todo
+                }
+            })
+                .populate(`users`)
+                .then((result) => {
+                    result ?
+                        res.status(200).json(result) :
+                        res.status(400).json({ msg: `Cant find project with id ${req.params.projectId}` })
+                }).catch((err) => {
+                    console.log("WWWWWWWWWWWWWaWWWWWWWWWWw");
+                    console.log(err);
+                    console.log(err.data);
+                    res.status(500).json({ msg: `internal serwwver error`, err: err })
+                });
+        } else {
+            //TODO:
+            console.log("WWWWWWWWWWWWWaWWWWWWWWWWw");
+            Project.findOneAndUpdate({ _id: req.params.projectId }, {
+                $push: {
+                    users: req.body.userId
+                }
+            })
+                .populate(`users`)
+                .then((result) => {
+                    result ?
+                        res.status(200).json(result) :
+                        res.status(400).json({ msg: `Cant find project with id ${req.params.projectId}` })
+                }).catch((err) => {
+                    console.log(err);
+                    console.log(err.data);
+                    res.status(500).json({ msg: `internal serwwver error`, err: err })
+                });
+        }
+
     },
     delete: function (req, res) {
         Project.deleteOne({ _id: req.params.projectId })
@@ -63,7 +100,7 @@ module.exports = {
                     }) :
                     res.status(404).json({ msg: `Cant delete project with id ${req.params.projectId}` })
             }).catch((err) => {
-                res.status(500).json({msg: `internal server error`})
+                res.status(500).json({ msg: `internal server error` })
             });
     },
 };

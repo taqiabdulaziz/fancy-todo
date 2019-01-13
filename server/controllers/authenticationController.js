@@ -12,6 +12,8 @@ module.exports = {
             //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
         }).then((ticket) => {
             const payload = ticket.getPayload();
+            console.log(payload, `pelod`);
+            
             const userid = payload['sub'];
 
             User.findOne({ email: payload.email })
@@ -23,32 +25,38 @@ module.exports = {
                         })
                     } else {
                         jwt.sign(payload, process.env.JWT_SECRET, function (err, encoded) {
+                            console.log(err);
                             !err ?
                                 res.status(200).json({
                                     payload: payload,
                                     jwt_token: encoded,
                                     userId: userData._id
                                 }) :
-                                res.status(500).json({ msg: `internal server error`, err: err })
+                                res.status(500).json({ msg: `internal server error`, err: err.data })
                         })
                     }
                 }).then((createResult) => {
 
                     jwt.sign(payload, process.env.JWT_SECRET, function (err, encoded) {
+                        console.log(err);
                         !err ?
                             res.status(200).json({
                                 payload: payload,
                                 jwt_token: encoded,
                                 userId: createResult._id
                             }) :
-                            res.status(500).json({ msg: `internal server error`, err: err })
+                            res.status(500).json({ msg: `internal server error`, err: err.data })
                     })
                 }).catch((err) => {
-                    res.status(500).json(err)
+                    console.log(err);
+                    
+                    res.status(500).json(err.data)
                 });
 
 
         }).catch((err) => {
+            console.log(err.data);
+            
             res.status(500).json(err)
 
         });;

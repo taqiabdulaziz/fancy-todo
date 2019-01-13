@@ -1,9 +1,10 @@
 const User = require(`../models/User`)
 const jwt = require(`jsonwebtoken`)
+const helpers = require(`../helpers/helpers`)
+
 
 module.exports = {
     create: function (req, res) {
-
         jwt.sign({
             username: req.body.username
         }, process.env.JWT_SECRET, function (err, encoded) {
@@ -14,13 +15,15 @@ module.exports = {
                         jwt_token: encoded
                     })
                 }).catch((err) => {
-                    res.status(500).json({ msg: `internal server error`, err: err })
+                    console.log(err);
+                    
+                    res.status(500).json({ msg: `internal server error`, err: err.data })
                 });
 
         })
     },
     findOne: function (req, res) {
-        User.findById(req.params.userId)
+        User.findOne(req.body)
             .then((result) => {
                 result ?
                     res.status(200).json(result) :
@@ -50,10 +53,10 @@ module.exports = {
                     res.status(404).json({
                         msg: `Cant delete, user not found with id ${req.params.userId}`
                     })
-                    
+
             }).catch((err) => {
-                        res.status(500).json({ msg: `internal server error`, err: err })
-                    });
+                res.status(500).json({ msg: `internal server error`, err: err })
+            });
     },
     findAll: function (req, res) {
         User.find()
@@ -63,6 +66,30 @@ module.exports = {
                     res.status(404).json({ msg: `no user found on db!` })
             }).catch((err) => {
                 res.status(500).json({ msg: `internal server error`, err: err })
+            });
+    },
+    login: function (req, res) {
+        console.log(req.body);
+
+        User.findOne({email: req.body.email})
+            .then((result) => {
+                console.log(result);
+                
+                if (result) {
+                    if (helpers.compare(req.body.password, result.password)) {
+                        jwt.sign(req.body, process.env.JWT_SECRET, function (err, encoded) {
+                            !err ?
+                                res.status(200).json({ result: result, jwt_token: encoded }) :
+                                res.status(500).json({ msg: `internal server error`, err: err.data })
+                        })   
+                    } else {
+                        res.status(400).json({msg: `username atau password salah`})
+                    }
+                }
+            }).catch((err) => {
+                console.log(err);
+                
+                res.status(500).json({ mgs: `internal server error`, err: err.data })
             });
     }
 };
