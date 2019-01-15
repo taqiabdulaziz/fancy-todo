@@ -437,15 +437,15 @@
                         swal("Success login")
                             .then((value) => {
                                 loginPage()
-                            }); 
-                            $("#swal-overlay").show();
+                            });
+                        $("#swal-overlay").show();
                     },
                     error: function (e) {
                         swal("email/password sudah ada")
                             .then((value) => {
-                                
-                            }); 
-                            $("#swal-overlay").show();
+
+                            });
+                        $("#swal-overlay").show();
 
                     }
                 });
@@ -466,19 +466,21 @@
                         password: $("#exampleInputPassword1").val()
                     },
                     success: function (response) {
-                        console.log(response);
                         localStorage.JWT_TOKEN = response.jwt_token
                         localStorage.userId = response.result._id
-                        $("#welcome-profile").html(response.result.name);
+                        response.result.name ?
+                            $("#welcome-profile").html(response.result.name) :
+                            $("#welcome-profile").html("Welcome, " + response.result.username.split(" ")[0]);
+
                         homePage()
 
                     },
                     error: function (e) {
                         swal("Username/password salah")
                             .then((value) => {
-                                
-                            }); 
-                            $("#swal-overlay").show();
+
+                            });
+                        $("#swal-overlay").show();
                     }
                 });
             }
@@ -1004,7 +1006,7 @@
                 $("body > :not(#login-page,#swal-overlay)").hide();
                 $("#login-page").appendTo("body");
                 $("#login-page").show();
-                
+
             }
 
             // MARK: home-page
