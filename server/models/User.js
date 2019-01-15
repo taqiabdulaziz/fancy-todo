@@ -4,7 +4,26 @@ let helpers = require(`../helpers/helpers`)
 
 var userSchema = new Schema({
     username: String,
-    email: String,
+    email: {
+        type: String,
+        validate: {
+            validator: function (v) {
+                return User.findOne({
+                    email: v,
+                    _id: {
+                        $ne: this._id
+                    }
+                }).then((result) => {
+                    if (result) {
+                        throw 'email already in use'
+                    }
+                }).catch((err) => {
+                    throw 'internal server error'
+                });
+                
+            }
+        }
+    },
     password: String,
 })
 

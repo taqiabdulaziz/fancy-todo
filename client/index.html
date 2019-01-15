@@ -10,10 +10,9 @@
     <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
     <link rel="shortcut icon" href="./assets/icons/icon.png" type="image/x-icon">
     <link rel="manifest" href="/manifest.json" />
+    <link rel="stylesheet" href="./assets/style.css">
     <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
-    <script>
-
-    </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <title>Todo-Fancy</title>
 </head>
 
@@ -35,13 +34,11 @@
 
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
-                
-               
+
             </ul>
-            
+
         </div>
     </nav>
-
 
     <div id="wrapper">
         <div class="row">
@@ -53,16 +50,16 @@
                             <a href="#" id="welcome-profile">
                                 Welcome, Taqi
                             </a>
-                            
+
                         </li>
                         <div class="container">
-                        <h6>UserID: </h6>
+                            <h6>UserID: </h6>
                             <h6 id="userId"></h6>
                         </div>
                         <hr>
                         <li>
-                            <a href="#" >My Profile</a>
-                            
+                            <a href="#">My Profile</a>
+
                         </li>
                         <li>
                             <a href="#" onclick="logout()">Logout</a>
@@ -79,62 +76,61 @@
 
                     </ul>
                 </div>
+                <div class="container">
+                    <div class="col" style="height: 100%; padding: 5vh" id="project-page">
+                        <ol class="breadcrumb" id="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">Projects</a></li>
+                        </ol>
 
-                <div class="col" style="height: 100vh; padding: 5vh" id="project-page">
-                    <ol class="breadcrumb" id="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Projects</a></li>
-                    </ol>
-                    <a href="#" onclick="addProject()">add project</a>
-                    <!-- PROJECT LIST -->
-                    <div id="projects">
-                        <div class="row">
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col">
-                                        <h5>Projects</h5>
-                                        <hr>
-                                        <div id="project-container">
+                        <!-- PROJECT LIST -->
+                        <div id="projects">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5>Projects</h5>
+                                            <a class="btn btn-primary" href="#" onclick="addProject()">add project</a>
+                                            <hr>
+                                            <div id="project-container">
 
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Project todo list -->
-                    <div class="col" style="height: 100vh; display: none" id="project-todolist-page">
+                        <!-- Project todo list -->
+                        <div class="col" style="height: 100vh; display: none" id="project-todolist-page">
 
-                        <a href="" class="btn btn-success btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm">ADD
-                            TODO</a>
-                        <div class="row">
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col">
-                                        <h5>Todo</h5>
-                                        <hr>
-                                        <div id="project-todolist-uncomplete-container">
-
+                            <a href="" class="btn btn-success btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm">ADD
+                                TODO</a>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5>Todo</h5>
+                                            <hr>
+                                            <div id="project-todolist-uncomplete-container">
+                                            </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <h5>Completed</h5>
+                                    <hr>
+                                    <div id="project-todolist-completed-container">
 
                                     </div>
-
                                 </div>
-                            </div>
-                            <div class="col">
-                                <h5>Completed</h5>
-                                <hr>
-                                <div id="project-todolist-completed-container">
+                                <div class="col">
+                                    <h5>Expired</h5>
+                                    <hr>
+                                    <div id="project-todolist-expired-container">
 
-                                </div>
-                            </div>
-                            <div class="col">
-                                <h5>Expired</h5>
-                                <hr>
-                                <div id="project-todolist-expired-container">
-
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -241,6 +237,7 @@
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Password</label>
                                 <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+
                             </div>
                             <button type="submit" class="btn btn-primary" onclick="signinForm()">Submit</button>
                         </form>
@@ -375,33 +372,32 @@
                 $("#project-page").hide();
                 $("#addProject-page").show();
                 $("#addMember-page").hide();
-                
+
             }
 
             function addOneMember() {
 
                 $.ajax({
-                            type: "PUT",
-                            url: `${baseUrl}/project/${currentProject}`,
-                            headers: {
-                                token: localStorage.JWT_TOKEN,
-                                change: "addMember"
-                            },
-                            data: {
-                                userId: $("#member-id-form").val()
-                            },
-                            success: function (response) {
-                                $("#addProject-page").hide();
-                                $("#addMember-page").hide();
-                                projectPage()
+                    type: "PUT",
+                    url: `${baseUrl}/project/${currentProject}`,
+                    headers: {
+                        token: localStorage.JWT_TOKEN,
+                        change: "addMember"
+                    },
+                    data: {
+                        userId: $("#member-id-form").val()
+                    },
+                    success: function (response) {
+                        $("#addProject-page").hide();
+                        $("#addMember-page").hide();
+                        projectPage()
 
-                            }
-                        });
+                    }
+                });
             }
 
             function addOneProject() {
                 $("#addProject-page").hide();
-                $("#project-page").show();
                 $.ajax({
                     type: "POST",
                     url: `${baseUrl}/project`,
@@ -414,7 +410,8 @@
                     },
                     success: function (response) {
                         projectList.push(response)
-                        
+                        projectPage()
+
                     }
                 });
             }
@@ -437,11 +434,18 @@
                         password: $("#register-password").val()
                     },
                     success: function (response) {
-                        console.log(response);
-
+                        swal("Success login")
+                            .then((value) => {
+                                loginPage()
+                            }); 
+                            $("#swal-overlay").show();
                     },
                     error: function (e) {
-                        console.log(e);
+                        swal("email/password sudah ada")
+                            .then((value) => {
+                                
+                            }); 
+                            $("#swal-overlay").show();
 
                     }
                 });
@@ -463,7 +467,6 @@
                     },
                     success: function (response) {
                         console.log(response);
-
                         localStorage.JWT_TOKEN = response.jwt_token
                         localStorage.userId = response.result._id
                         $("#welcome-profile").html(response.result.name);
@@ -471,8 +474,11 @@
 
                     },
                     error: function (e) {
-                        console.log(e);
-
+                        swal("Username/password salah")
+                            .then((value) => {
+                                
+                            }); 
+                            $("#swal-overlay").show();
                     }
                 });
             }
@@ -882,7 +888,7 @@
 
                         projectList = response
                         response.forEach((element) => {
-                            
+
                             $(`<div class="card" style="width: 30%; margin-bottom: 2vh">
                                     <div class="card-body">
                                         <h5 class="card-title">${element.name}</h5>
@@ -893,9 +899,7 @@
                                         <a href="#" class="card-link" onclick="projectTodos('${element._id}')">Todos</a>
                                     </div>
                                     </div>`).appendTo("#project-container");
-
                         })
-
                     }
                 });
             }
@@ -997,9 +1001,10 @@
             // MARK: login-page
             function loginPage() {
 
-                $("body > :not(#login-page)").hide();
+                $("body > :not(#login-page,#swal-overlay)").hide();
                 $("#login-page").appendTo("body");
                 $("#login-page").show();
+                
             }
 
             // MARK: home-page
